@@ -5,17 +5,19 @@ const initialGameBoard = [
   [null, null, null],
   [null, null, null],
 ];
-export default function GameBoard() {
+export default function GameBoard({ onSelectSquare, activePlayerSymbol }) {
   // State hook to manage & update the game board
   const [gameBoard, setGameBoard] = useState(initialGameBoard);
 
-  const handleSelectedSquare = (rowIndex, colIndex) => {
+  const handleSelectSquare = (rowIndex, colIndex) => {
     setGameBoard((prevGameBoard) => {
         const updatedBoard = [...prevGameBoard.map(innerArray => [...innerArray])];        
-        updatedBoard[rowIndex][colIndex] = 'X';
+        updatedBoard[rowIndex][colIndex] = activePlayerSymbol;
         
         return updatedBoard;
     });
+
+    onSelectSquare();
   }
 
   return (
@@ -32,7 +34,7 @@ export default function GameBoard() {
                 when the click event occurs.
                 This pattern is very common in React when we need to pass additional parameters
                 to an event handler. */}
-                <button onClick={() => handleSelectedSquare(rowIndex, colIndex)}>{playerSymbol}</button>
+                <button onClick={() => handleSelectSquare(rowIndex, colIndex)}>{playerSymbol}</button>
               </li>
             ))}
           </ol>
