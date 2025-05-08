@@ -18,6 +18,8 @@ function App() {
       }
 
       const updatedTurns = [ { square: { row: rowIndex, col: colIndex }, player: currentPlayer }, ...prevTurns];
+
+      return updatedTurns;
     });
   }
 
