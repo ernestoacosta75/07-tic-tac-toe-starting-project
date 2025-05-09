@@ -31,7 +31,7 @@ export default function GameBoard({ onSelectSquare, turns }) {
                 when the click event occurs.
                 This pattern is very common in React when we need to pass additional parameters
                 to an event handler. */}
-                <button onClick={() => onSelectSquare(rowIndex, colIndex)}>{playerSymbol}</button>
+                <button onClick={() => onSelectSquare(rowIndex, colIndex)} disabled={playerSymbol !== null}>{playerSymbol}</button>
               </li>
             ))}
           </ol>
