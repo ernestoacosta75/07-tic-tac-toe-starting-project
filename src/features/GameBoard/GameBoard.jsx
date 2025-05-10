@@ -1,25 +1,7 @@
-import { useState } from "react";
-
-const initialGameBoard = [
-  [null, null, null],
-  [null, null, null],
-  [null, null, null],
-];
-export default function GameBoard({ onSelectSquare, turns }) {
-  // gameBoard is a computed valued that is derived from the turns prop.
-  // It is not a state variable, but rather a derived value that is calculated based on the turns prop.
-  let gameBoard = initialGameBoard;
-  
-  turns.forEach((turn) => {
-    const { square, player } = turn;
-    const { row, col } = square;
-
-    gameBoard[row][col] = player;
-  });
-
+const GameBoard = ({ onSelectSquare, board }) => {
   return (
     <ol id="game-board">
-      {gameBoard.map((row, rowIndex) => (
+      {board.map((row, rowIndex) => (
         <li key={rowIndex}>
           <ol>
             {row.map((playerSymbol, colIndex) => (
@@ -40,3 +22,5 @@ export default function GameBoard({ onSelectSquare, turns }) {
     </ol>
   );
 }
+
+export default GameBoard;
