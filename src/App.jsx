@@ -11,37 +11,50 @@ const initialGameBoard = [
 ];
 
 const deriveActivePlayer = (gameTurns) => {
-  if (gameTurns.length === 0) return "X";
+  let currentPlayer = 'X';
 
-  const lastTurn = gameTurns[0];
-  return lastTurn.player === "X" ? "O" : "X";
-}
-
-// gameBoard is a computed valued that is derived from the turns prop.
-  // It is not a state variable, but rather a derived value that is calculated based on the turns prop.
-  let gameBoard = initialGameBoard;
-  
-  gameTurns.forEach((turn) => {
-    const { square, player } = turn;
-    const { row, col } = square;
-
-    gameBoard[row][col] = player;
-  });
-
-  for (const combination in WINNING_COMBINATIONS) {
-    const firstSquareSymbol = WINNING_COMBINATIONS[combination][0];
-    const secondSquareSymbol = WINNING_COMBINATIONS[combination][1];
-    const thirdSquareSymbol = WINNING_COMBINATIONS[combination][2];
-
-    const firstSquare = gameTurns.find(turn => 
-      turn.square.row === firstSquareSymbol.row && turn.square.col === firstSquareSymbol.column);
+  if (gameTurns.length > 0 && gameTurns[0].player === 'X') {
+    currentPlayer = 'O';
   }
+
+  return currentPlayer;
+}
 
 const App = () => {
   const [gameTurns, setGameTurns] = useState([]);
 
   // Derivating activePlayer state
   const activePlayer = deriveActivePlayer(gameTurns);
+
+  // gameBoard is a computed valued that is derived from the turns prop.
+  // It is not a state variable, but rather a derived value that is calculated based on the turns prop.
+  let gameBoard = initialGameBoard;
+  
+  for (const turn of gameTurns) {
+    const { square, player } = turn;
+    const { row, col } = square;
+
+    gameBoard[row][col] = player;
+  }
+
+  let winner;
+
+  for (const combination of WINNING_COMBINATIONS) {
+    const firstSquareSymbol =
+      gameBoard[combination[0].row][combination[0].column];
+    const secondSquareSymbol =
+      gameBoard[combination[1].row][combination[1].column];
+    const thirdSquareSymbol =
+      gameBoard[combination[2].row][combination[2].column];
+
+    if (
+      firstSquareSymbol &&
+      firstSquareSymbol === secondSquareSymbol &&
+      firstSquareSymbol === thirdSquareSymbol
+    ) {
+      winner = firstSquareSymbol;
+    }
+  }
 
   const handleSelectSquare = (rowIndex, colIndex) => {
     setGameTurns((prevTurns) => {
@@ -70,6 +83,7 @@ const App = () => {
             isActive={activePlayer === "O"}
           ></Player>
         </ol>
+        {winner && <p>You won, {winner}!</p>}
         <GameBoard onSelectSquare={handleSelectSquare} board={gameBoard} />
       </div>
       <Log turns={gameTurns} />
