@@ -29,7 +29,7 @@ const App = () => {
 
   // gameBoard is a computed valued that is derived from the turns prop.
   // It is not a state variable, but rather a derived value that is calculated based on the turns prop.
-  let gameBoard = initialGameBoard;
+  let gameBoard = [...initialGameBoard.map(arr => [...arr])];
   
   for (const turn of gameTurns) {
     const { square, player } = turn;
@@ -71,6 +71,11 @@ const App = () => {
     });
   };
 
+  function handleRestart() {
+    console.log("Inside handleRestart");
+    setGameTurns([]);
+  }
+
   return (
     <main>
       <div id="game-container">
@@ -86,7 +91,7 @@ const App = () => {
             isActive={activePlayer === "O"}
           ></Player>
         </ol>
-        {(winner || hasDraw) && <GameOver winner={winner} />}
+        {(winner || hasDraw) && <GameOver winner={winner} onRestart={handleRestart} />}
         <GameBoard onSelectSquare={handleSelectSquare} board={gameBoard} />
       </div>
       <Log turns={gameTurns} />
