@@ -2,6 +2,7 @@ import Player from "@features/Player/Player";
 import GameBoard from "@features/GameBoard/GameBoard";
 import { useState } from "react";
 import Log from "@features/Log/Log";
+import { WINNING_COMBINATIONS } from "@utils/winning-combinations";
 
 const deriveActivePlayer = (gameTurns) => {
   if (gameTurns.length === 0) return "X";
